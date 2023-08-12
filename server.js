@@ -127,8 +127,8 @@ app.get("/dl", (req, res) => {
 
 const server = https.createServer(
   {
-    key: fs.readFileSync("../certs/server.key"),
-    cert: fs.readFileSync("../certs/server.cert"),
+    key: fs.readFileSync("../certs/private.key"),
+    cert: fs.readFileSync("../certs/certificate.cert"),
   },
   app
 );

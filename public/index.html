@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Upload</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <form
+      id="uploadForm"
+      enctype="multipart/form-data"
+      action="/quickshare"
+      method="post"
+    >
+      <input type="file" name="file" />
+      <input type="submit" value="Upload" />
+    </form>
+
+    <form id="dlForm" action="/dl">
+      <input
+        type="text"
+        name="hex"
+        maxlength="4"
+        minlength="4"
+        placeholder="Download id..."
+      />
+      <input type="submit" value="Download" />
+    </form>
+
+    <script>
+      const form = document.getElementById("uploadForm");
+      const messageDiv = document.getElementById("message");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (response.status === 400) {
+              throw new Error("File too large or other upload error.");
+            }
+            return response.text();
+          })
+          .then((data) => {
+            window.location.href = "/share.html?" + data;
+            // Here, you can add any logic after a successful upload. For instance, reset the form, redirect the user, etc.
+          })
+          .catch((error) => {
+            messageDiv.textContent = "Upload failed: " + error.message;
+            // Handle the error, possibly inform the user, etc.
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1 id="code"></h1>
+
+    <button id="copy-dl-url" onclick="copy_dl_url()">Copy Download URL</button>
+    <br />
+    <button id="copy-id" onclick="copy_id()">Copy ID</button>
+  </body>
+
+  <script>
+    //set code to the content of the query string
+    document.getElementById("code").innerHTML =
+      "Your share code is " + window.location.search.substring(1);
+
+    function copy_dl_url() {
+      //copy the download url to clipboard
+      var dl_url =
+        window.location.origin +
+        "/dl?hex=" +
+        window.location.search.substring(1);
+      navigator.clipboard.writeText(dl_url);
+    }
+
+    function copy_id() {
+      //copy the id to clipboard
+      navigator.clipboard.writeText(window.location.search.substring(1));
+    }
+  </script>
+</html>

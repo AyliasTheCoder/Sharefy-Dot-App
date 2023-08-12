@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const https = require("https");
 
 var dir = "../uploads";
 
@@ -26,7 +27,7 @@ function deleteFilesAfterExpiration() {
 setTimeout(deleteFilesAfterExpiration, 10000);
 
 const app = express();
-const PORT = 3000;
+const PORT = 443;
 
 app.use(express.static("./public"));
 
@@ -124,6 +125,14 @@ app.get("/dl", (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+const server = https.createServer(
+  {
+    key: fs.readFileSync("../certs/server.key"),
+    cert: fs.readFileSync("../certs/server.cert"),
+  },
+  app
+);
+
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
 });

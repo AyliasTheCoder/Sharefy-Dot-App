@@ -129,6 +129,26 @@ app.get("/dl", (req, res) => {
   });
 });
 
+app.get("/getmimetype", (req, res) => {
+  var hexCode = req.query.hex;
+
+  if (hexCode == null) {
+    res.send("No hex code provided");
+    return;
+  }
+
+  var dir = "../uploads/" + hexCode;
+
+  if (!fs.existsSync(dir)) {
+    res.send("No file found");
+    return;
+  }
+
+  var info = JSON.parse(fs.readFileSync(dir + "/info.json"));
+
+  res.send(info.type);
+});
+
 const server = https.createServer(
   {
     key: fs.readFileSync("../certs/private.key"),

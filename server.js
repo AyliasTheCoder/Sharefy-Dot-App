@@ -119,8 +119,12 @@ app.get("/dl", (req, res) => {
   var file = info.name;
 
   res.download(dir + "/" + file, file, (err) => {
-    if (err) {
-      res.send("No file found");
+    try {
+      if (err) {
+        res.send("No file found");
+      }
+    } catch (err) {
+      console.log(err);
     }
   });
 });

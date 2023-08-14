@@ -41,32 +41,32 @@
       .then((response) => response.json())
       .then((data) => {
         //if the mimetype is an image, display it
-        if (data.mimetype.includes("image")) {
+        if (data.type.includes("image")) {
           document.getElementById("preview").innerHTML =
             "<img src='/dl?hex=" +
             window.location.search.substring(1) +
             "' alt='preview' />";
         }
         //if the mimetype is a video, display it
-        else if (data.mimetype.includes("video")) {
+        else if (data.type.includes("video")) {
           document.getElementById("preview").innerHTML =
             "<video controls><source src='/dl?hex=" +
             window.location.search.substring(1) +
             "' type='" +
-            data.mimetype +
+            data.type +
             "'></video>";
         }
         //if the mimetype is an audio, display it
-        else if (data.mimetype.includes("audio")) {
+        else if (data.type.includes("audio")) {
           document.getElementById("preview").innerHTML =
             "<audio controls><source src='/dl?hex=" +
             window.location.search.substring(1) +
             "' type='" +
-            data.mimetype +
+            data.type +
             "'></audio>";
         }
         //if the mimetype is a text, display it
-        else if (data.mimetype.includes("text")) {
+        else if (data.type.includes("text")) {
           fetch("/dl?hex=" + window.location.search.substring(1))
             .then((response) => response.text())
             .then((data) => {
@@ -75,63 +75,63 @@
             });
         }
         //if the mimetype is a pdf, display it
-        else if (data.mimetype.includes("pdf")) {
+        else if (data.type.includes("pdf")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a zip, display it
-        else if (data.mimetype.includes("zip")) {
+        else if (data.type.includes("zip")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a tar, display it
-        else if (data.mimetype.includes("tar")) {
+        else if (data.type.includes("tar")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a rar, display it
-        else if (data.mimetype.includes("rar")) {
+        else if (data.type.includes("rar")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a 7z, display it
-        else if (data.mimetype.includes("7z")) {
+        else if (data.type.includes("7z")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a doc, display it
-        else if (data.mimetype.includes("doc")) {
+        else if (data.type.includes("doc")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a docx, display it
-        else if (data.mimetype.includes("docx")) {
+        else if (data.type.includes("docx")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a ppt, display it
-        else if (data.mimetype.includes("ppt")) {
+        else if (data.type.includes("ppt")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +
             "'></iframe>";
         }
         //if the mimetype is a pptx, display it
-        else if (data.mimetype.includes("pptx")) {
+        else if (data.type.includes("pptx")) {
           document.getElementById("preview").innerHTML =
             "<iframe src='/dl?hex=" +
             window.location.search.substring(1) +

@@ -38,7 +38,7 @@
 
     //get the preview mimetype
     fetch("/getmimetype?hex=" + window.location.search.substring(1))
-      .then((response) => response.text())
+      .then((response) => response.json())
       .then((data) => {
         //if the mimetype is an image, display it
         if (data.mimetype.includes("image")) {

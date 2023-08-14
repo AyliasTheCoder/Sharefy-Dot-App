@@ -144,9 +144,9 @@ app.get("/getmimetype", (req, res) => {
     return;
   }
 
-  var info = JSON.parse(fs.readFileSync(dir + "/info.json"));
+  var info = fs.readFileSync(dir + "/info.json");
 
-  res.send(info.type);
+  res.send(info);
 });
 
 const server = https.createServer(

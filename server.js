@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+var throttle = require("express-throttle-bandwidth");
 const fs = require("fs");
 const https = require("https");
 
@@ -89,7 +90,7 @@ const upload = multer({
 // Set up an endpoint for uploading files.
 app.post(
   "/quickshare",
-  upload.single("file"),
+  upload.single("files"),
   (req, res) => {
     // Return the generated filename as the response
     res.send(hex); // Sends just the 4-digit hex without the file extension.

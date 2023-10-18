@@ -1,25 +1,121 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>File Upload</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="sharefy-logo.jpg" />
     <link rel="stylesheet" href="style.css" />
+    <style>
+      .highlight {
+        border: 2px dashed #ccc;
+      }
+
+      .file-upload {
+        margin: 10px 0;
+        cursor: pointer; /* Add cursor style to indicate clickability */
+      }
+
+      .progress {
+        width: 100%;
+        height: 10px;
+        background-color: #eee;
+        position: relative;
+      }
+
+      .progress-bar {
+        height: 100%;
+        background-color: #4caf50;
+        transition: width 0.3s;
+      }
+
+      #file-input {
+        display: none; /* Hide the file input element */
+      }
+    </style>
   </head>
   <body>
-    <form
-      id="uploadForm"
-      enctype="multipart/form-data"
-      action="/quickshare"
-      method="post"
-    >
-      <input type="file" name="file" />
-      <input type="submit" value="Upload" />
-    </form>
+    <h1 id="drop-area">Click to select files, or drag and drop here</h1>
+    <div id="file-list"></div>
+    <input type="file" id="file-input" multiple />
 
-    <form id="dlForm" action="/dl">
+    <script>
+      const dropArea = document.getElementById("drop-area");
+      const fileList = document.getElementById("file-list");
+      const fileInput = document.getElementById("file-input");
+
+      dropArea.addEventListener("click", () => {
+        fileInput.click(); // Trigger the file input click event
+      });
+
+      dropArea.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropArea.classList.add("highlight");
+      });
+
+      dropArea.addEventListener("dragleave", () => {
+        dropArea.classList.remove("highlight");
+      });
+
+      dropArea.addEventListener("drop", (e) => {
+        e.preventDefault();
+        handleFiles(e.dataTransfer.files);
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        const files = e.target.files;
+
+        handleFiles(files);
+      });
+
+      function handleFiles(files) {
+        dropArea.classList.remove("highlight");
+
+        for (const file of files) {
+          const fileUpload = document.createElement("div");
+          fileUpload.className = "file-upload";
+          fileUpload.innerHTML = `
+          <div>${file.name}</div>
+          <div class="progress">
+            <div class="progress-bar"></div>
+          </div>
+        `;
+          fileList.appendChild(fileUpload);
+
+          const formData = new FormData();
+          formData.append("files", file);
+
+          const progressBar = fileUpload.querySelector(".progress-bar");
+
+          fetch("/quickshare", {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Upload failed");
+              }
+              return response.text();
+            })
+            .then((data) => {
+              console.log(data);
+              progressBar.style.width = "100%";
+
+              // Replace progress bar with the response
+              setTimeout(() => {
+                fileUpload.innerHTML += `<span>ID: ${data}</span>
+              `;
+              }, 1000); // You can adjust the delay as needed
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              progressBar.style.backgroundColor = "#f44336";
+            });
+        }
+      }
+    </script>
+  </body>
+</html>
+
+<!-- <form id="dlForm" action="/dl">
       <input
         type="text"
         name="hex"
@@ -28,36 +124,4 @@
         placeholder="Download id..."
       />
       <input type="submit" value="Download" />
-    </form>
-
-    <script>
-      const form = document.getElementById("uploadForm");
-      const messageDiv = document.getElementById("message");
-
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(form);
-
-        fetch(form.action, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => {
-            if (response.status === 400) {
-              throw new Error("File too large or other upload error.");
-            }
-            return response.text();
-          })
-          .then((data) => {
-            window.location.href = "/share.html?" + data;
-            // Here, you can add any logic after a successful upload. For instance, reset the form, redirect the user, etc.
-          })
-          .catch((error) => {
-            messageDiv.textContent = "Upload failed: " + error.message;
-            // Handle the error, possibly inform the user, etc.
-          });
-      });
-    </script>
-  </body>
-</html>
+    </form> -->
